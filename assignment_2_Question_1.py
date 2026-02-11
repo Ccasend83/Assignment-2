@@ -1,41 +1,40 @@
 # read the file
-f = open('sample-file.txt', 'r', encoding='utf-8')
-content = f.read()
+file_opener_for_reading = open('sample-file.txt', 'r', encoding='utf-8')
+content = file_opener_for_reading.read()
 
 
 # split into initial tokens
-raw_tokens = content.split()
+raw_words_from_text_file = content.split()
+regular_characters_for_cleaning = "abcdefghijklmnopqrstuvwxyz"
+total_word_counts = {}
 
-punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-alpha_chars = "abcdefghijklmnopqrstuvwxyz"
-word_counts = {}
+for individual_words_in_file in raw_words_from_text_file:
+    # convert to lowercase
+    individual_words_in_file = individual_words_in_file.lower()
 
-for token in raw_tokens:
-    # 2. Convert to lowercase
-    token = token.lower()
+    # remove punctuation from beginning and end
+    individual_words_in_file = individual_words_in_file.strip('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
 
-    # 3. Remove punctuation from beginning and end
-    token = token.strip(punctuation)
+    # count alphabetic characters to ensure at least two
+    regular_characters_for_counting = 0
+    for characters_found_in_each_word in individual_words_in_file:
+        if characters_found_in_each_word in regular_characters_for_cleaning:
+            regular_characters_for_counting += 1
 
-    # 4. Count alphabetic characters to ensure at least two
-    alpha_count = 0
-    for char in token:
-        if char in alpha_chars:
-            alpha_count += 1
-
-    if alpha_count >= 2:
+    if regular_characters_for_counting >= 2:
         # 5. Update frequency count
-        if token in word_counts:
-            word_counts[token] += 1
+        if individual_words_in_file in total_word_counts:
+            total_word_counts[individual_words_in_file] += 1
         else:
-            word_counts[token] = 1
+            total_word_counts[individual_words_in_file] = 1
 
 # Sort by count (descending)
-# .items() gives a list of (word, count) tuples
-sorted_items = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
+# .items() gives a list of words and their counts
+# make sure reverse = True so it goes in descending order
+final_sorted_words = sorted(total_word_counts.items(), key=lambda x: x[1], reverse=True)
 
 # Print the top 10 in the "word -> count" format
-for i in range(min(10, len(sorted_items))):
-    word, count = sorted_items[i]
-    print(f"{word} -> {count}")
-f.close()
+for i in range(min(10, len(final_sorted_words))):
+    total_words, total_count = final_sorted_words[i]
+    print(f"{total_words} -> {total_count}")
+file_opener_for_reading.close()

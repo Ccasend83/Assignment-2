@@ -48,4 +48,5 @@ for i in range(min(2, len(duplicate_sets))):
     for line_num, text in current_set:
         print(f"{line_num}--> {text}")
     print("*" * 30)
+
 f.close()

@@ -1,40 +1,41 @@
-def find_lines_containing(filename, keyword):
-    """
-    Returns a list of (line_number, line_text) for lines that contain
-    keyword (case-insensitive). Line numbers start at 1.
-    """
-    line_number = 1
-    results = []
-    # Convert keyword to lowercase once to ensure case-insensitive matching
-    keyword_lowercase = keyword.lower()
+def find_lines_containing_specific_word(inserted_filename_for_checking, inserted_keyword_for_checking):
 
-    # Open the file and iterate through it
-    file = open(filename, 'r', encoding='utf-8')
+    #returns a list of initial_line_number, line_text for lines that contain
+    #inserted_keyword_for_checking (case-insensitive). Line numbers start at 1.
 
-    #
-    for line_text in file:
-        # Check if the keyword exists in the line (case-insensitive)
-        if keyword_lowercase in line_text.lower():
-            results.append((line_number, line_text.strip()))
+    initial_line_number = 1
+    final_sorted_results = []
+    # convert keyword to lowercase once to ensure case-insensitive matching
+    keyword_for_testing_lowercase = inserted_keyword_for_checking.lower()
+
+    # open the file and iterate through it
+    inserted_file_for_reading = open(inserted_filename_for_checking, 'r', encoding='utf-8')
+
+    # for loop outputs each individual line found in inserted_file_for_reading
+    for text_for_each_line in inserted_file_for_reading:
+        # check if the keyword exists in the line (case-insensitive)
+        if keyword_for_testing_lowercase in text_for_each_line.lower():
+            final_sorted_results.append((initial_line_number, text_for_each_line.strip()))
 
         # Increment the counter for the next line
-        line_number += 1
+        initial_line_number += 1
 
-    file.close()
-    return results
+    # return our final results and close the file
+    inserted_file_for_reading.close()
+    return final_sorted_results
 
 
-
+# example cases
 filename_for_testing = "sample-file.txt"
 keyword_for_testing = "data"
 
-# Store the list of tuples (line_number, line_text)
-matches = find_lines_containing(filename_for_testing, keyword_for_testing)
+# stores the total matches found using keyword_for_testing
+total_matches_found = find_lines_containing_specific_word(filename_for_testing, keyword_for_testing)
 
-# print how many matching lines were found
-print(f"Total matching lines found for keyword --> {keyword_for_testing}: {len(matches)}")
+# prints how many matching lines were found
+print(f"Total matching lines found for keyword --> {keyword_for_testing}: {len(total_matches_found)}")
 
-# Print the first 3 matching lines
+# prints the first 3 matching lines
 print("First 3 matching lines:")
-for line_no, text in matches[:3]:
-    print(f"Line {line_no}: {text}")
+for line_number, follow_up_text in total_matches_found[:3]:
+    print(f"Line {line_number}: {follow_up_text}")
